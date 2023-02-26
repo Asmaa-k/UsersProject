@@ -46,7 +46,7 @@ class UserViewModel @Inject constructor(
                         }
                     }
                     is Resource.Success -> _userList.emit(result.data!!)
-                    is Resource.Loading -> _loading.value = false
+                    is Resource.Loading -> _loading.value = result.data.isNullOrEmpty()
                 }
             }
         }
