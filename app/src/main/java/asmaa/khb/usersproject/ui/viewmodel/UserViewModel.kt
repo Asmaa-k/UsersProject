@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
+class UserViewModel @Inject internal constructor(
     repository: UserRepository
 ) : ViewModel() {
     /*Notification Settings List*/
-    private val _userList: MutableSharedFlow<List<User>> = MutableSharedFlow()
+    private val _userList: MutableSharedFlow<List<User>> = MutableSharedFlow(1)
     internal val userList = _userList.asSharedFlow()
 
     /*Error*/
@@ -31,12 +31,12 @@ class UserViewModel @Inject constructor(
     private val _loading: MutableStateFlow<Boolean> = MutableStateFlow(true)
     internal val loading: StateFlow<Boolean> get() = _loading.asStateFlow()
 
-    private val users = repository.getRestaurants()
+    private val users = repository.getUsersList()
 
     fun getUsersList() {
-        _loading.value = true
         viewModelScope.launch {
             users.collect { result ->
+                _loading.value = result is Resource.Loading
                 when (result) {
                     is Resource.Error -> {
                         if (result.data.isNullOrEmpty()) {
@@ -46,7 +46,7 @@ class UserViewModel @Inject constructor(
                         }
                     }
                     is Resource.Success -> _userList.emit(result.data!!)
-                    is Resource.Loading -> _loading.value = result.data.isNullOrEmpty()
+                    is Resource.Loading -> Unit
                 }
             }
         }

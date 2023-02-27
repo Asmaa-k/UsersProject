@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import asmaa.khb.usersproject.databinding.ActivityMainBinding
 import asmaa.khb.usersproject.ui.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.haizo.generaladapter.kotlin.setupVertical
 import com.haizo.generaladapter.listadapter.BlenderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,9 +31,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        if (::binding.isInitialized) binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = userAdapter
+        if (::binding.isInitialized) binding.recyclerView.let {
+            it.setupVertical()
+            it.adapter = userAdapter
         }
     }
 

@@ -16,16 +16,10 @@ class UserViewHolder(
 ) : BaseBindingViewHolder<User>(binding) {
 
     override fun onBind(listItem: User) {
-        binding.textViewFullName.let { tv ->
-            tv.text = tv.context.getString(R.string.item_full_name, "${listItem.firstName} ${listItem.lastName}")
-
-        }
-        binding.textViewEmail.let { tv ->
-            tv.text = tv.context.getString(R.string.item_email, listItem.emailAddress)
-        }
-        binding.textViewAddress.let { tv ->
-            tv.text = tv.context.getString(R.string.item_address, listItem.city)
-        }
+        binding.textViewFullName.text =
+            context.getString(R.string.item_full_name, "${listItem.firstName} ${listItem.lastName}")
+        binding.textViewEmail.text = context.getString(R.string.item_email, listItem.emailAddress)
+        binding.textViewAddress.text = context.getString(R.string.item_address, listItem.city)
         Glide.with(itemView).load(listItem.avatar).into(binding.imageViewAvatar)
     }
 }

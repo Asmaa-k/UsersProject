@@ -14,7 +14,7 @@ class UserRepository @Inject constructor(
 ) {
     private val restaurantDao = db.userDao()
 
-    fun getRestaurants() = networkBoundResource(query = {
+    fun getUsersList() = networkBoundResource(query = {
         restaurantDao.getAllUsers()
     }, fetch = {
         delay(2000)
