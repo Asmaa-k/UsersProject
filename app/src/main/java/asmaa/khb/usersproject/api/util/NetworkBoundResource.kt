@@ -15,8 +15,8 @@ inline fun <ResultType, RequestType> networkBoundResource(
 
 ) = flow {
     val data = query().first()
-    emit(Resource.Loading(null))
     val flow = if (shouldFetch(data)) {
+        emit(Resource.Loading(data))
         try {
             saveFetchResult(map(fetch()))
             query().map { Resource.Success(it) }
@@ -26,6 +26,5 @@ inline fun <ResultType, RequestType> networkBoundResource(
     } else {
         query().map { Resource.Success(it) }
     }
-    emit(Resource.Loading(data))
     emitAll(flow)
 }
